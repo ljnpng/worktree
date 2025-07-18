@@ -1,31 +1,121 @@
-# worktree
-zsh plugins for working with git worktree 
+# Git Worktree Plugin
+
+A Zsh plugin that simplifies Git worktree management with convenient commands and shell integration.
+
+## Installation
+
+### Oh My Zsh
+
+1. Clone this repository to your Oh My Zsh custom plugins directory:
+```bash
+git clone https://github.com/your-username/worktree-plugin.git ~/.oh-my-zsh/custom/plugins/worktree
+```
+
+2. Add `worktree` to your plugins list in `~/.zshrc`:
+```bash
+plugins=(... worktree)
+```
+
+3. Restart your shell or run:
+```bash
+source ~/.zshrc
+```
+
+### Manual Installation
+
+1. Download `worktree.plugin.zsh` and source it in your `~/.zshrc`:
+```bash
+source /path/to/worktree.plugin.zsh
+```
 
 ## Usage
 
-###Install the plugin
-`zsh
-(cd $ZSH_CUSTOM; git clone git@github.com:jspears/worktree.git)
-`
+### Create/Switch to Worktree
 
-### Activate the plugin
-Edit .zshrc
-find the `plugins` variable
-add 'worktree' to the list
-
-```zsh
-plugins=(worktree zsh-nvm git npm )
-
+```bash
+worktree <branch-name>
 ```
 
+Creates a worktree in `../repo-name-worktree/branch-name` and switches to it.
 
-### Configuration
-There are 2 ENV variables to configure
-- `WORKTREE_CODE_DIR ` - what directory to look for projects
-- `WORKTERE_CODE_EDITOR` - what to use as an IDE.  If unset it will not prompt to open IDE in new worktree
-- `WORKTREE_POST_SWITCH` - A command to run after switchin (maybe npm install?)
-- `WORKTREE_POST_CREATE` - A command to run after creating a new worktree.
+**Examples:**
+```bash
+# Create worktree for existing branch
+worktree feature-login
+
+# Create worktree for new branch
+worktree new-feature
+```
+
+### Remove Worktree
+
+```bash
+worktree-remove <branch-name>
+```
+
+Removes the worktree for the specified branch.
+
+**Example:**
+```bash
+worktree-remove feature-login
+```
+
+### List Branches
+
+```bash
+origin_branch
+```
+
+Lists all branches sorted by commit date.
+
+### Navigate to Git Root
+
+```bash
+git_root
+```
+
+Navigates to the Git repository root directory.
+
+## Configuration
+
+Customize behavior with environment variables:
+
+```bash
+# IDE command for opening worktrees
+export WORKTREE_CODE_EDITOR="code"
+
+# Command executed after switching to worktree
+export WORKTREE_POST_SWITCH="echo 'Switched to worktree'"
+
+# Command executed after creating worktree
+export WORKTREE_POST_CREATE="npm install"
+
+# Directory pattern for project discovery
+export WORKTREE_CODE_DIR="../*"
+```
+
+## Features
+
+- **Smart Directory Structure**: Organizes worktrees in `../repo-name-worktree/` directory
+- **Tab Completion**: Auto-complete branch names and worktree paths
+- **IDE Integration**: Optional IDE opening after worktree creation
+- **Post-Action Hooks**: Customizable commands after create/switch operations
+- **Command Preview**: Shows the actual Git commands before execution
+- **Interactive Prompts**: Confirmation dialogs for IDE opening
+
+## Tab Completion
+
+The plugin provides tab completion for:
+- `worktree <Tab>` - Complete existing branches and worktree names
+- `worktree-remove <Tab>` - Complete existing branch names
 
 ## Dependencies
-A relatively modern version of git and oh-my-zsh
+
+- Git (relatively modern version)
+- Zsh shell
+- Oh My Zsh (for Oh My Zsh installation method)
+
+## License
+
+MIT License
 

@@ -18,7 +18,20 @@ function git_root(){
 }
 
 export function worktree-remove(){
-    git worktree remove $1
+    git_root
+    BRANCH=$1
+    WORKTREE_BASE="../$(basename $PWD)-worktree"
+    DIRNAME="$WORKTREE_BASE/$BRANCH"
+    
+    if [ -d "$DIRNAME" ]; then
+        echo "Removing worktree for branch '$BRANCH' at '$DIRNAME'"
+        echo "→ git worktree remove $DIRNAME"
+        git worktree remove $DIRNAME
+    else
+        echo "Worktree for branch '$BRANCH' not found at '$DIRNAME'"
+        echo "Available worktrees:"
+        git worktree list
+    fi
 }
 
 export function origin_branch(){
@@ -28,10 +41,15 @@ export function origin_branch(){
 export function worktree(){
     git_root
     BRANCH=$1
-    DIRNAME="../$(basename $PWD)-$BRANCH"
+    WORKTREE_BASE="../$(basename $PWD)-worktree"
+    DIRNAME="$WORKTREE_BASE/$BRANCH"
+    
+    # Ensure the base worktree directory exists
+    mkdir -p "$WORKTREE_BASE"
 
     if origin_branch | grep $BRANCH; then 
         echo "branch '$BRANCH' exists checking out into '$DIRNAME'"
+        echo "→ git worktree add $DIRNAME $BRANCH"
         git worktree add $DIRNAME $BRANCH
         pushd 
         $=WORKTREE_POST_CREATE
@@ -42,6 +60,7 @@ export function worktree(){
 
     else
         echo "'$1' is a new branch checking out into '$DIRNAME'"
+        echo "→ git worktree add $DIRNAME -b $BRANCH"
         git worktree add $DIRNAME -b $BRANCH
         pushd 
         $=WORKTREE_POST_CREATE
@@ -61,7 +80,7 @@ function _worktree(){
 }
 
 function _worktree_remove(){
-    compadd $(git worktree list | cut -d' ' -f1)
+    compadd $(git worktree list | sed 's,.*\[\(.*\)\]$,\1,g' | grep -v '^$')
 }
 
 function _code(){
