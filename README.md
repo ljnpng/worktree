@@ -8,7 +8,7 @@ A Zsh plugin that simplifies Git worktree management with convenient commands an
 
 1. Clone this repository to your Oh My Zsh custom plugins directory:
 ```bash
-git clone https://github.com/ljnpng/worktree-plugin.git ~/.oh-my-zsh/custom/plugins/worktree
+git clone git@github.com:ljnpng/worktree.git ~/.oh-my-zsh/custom/plugins/worktree
 ```
 
 2. Add `worktree` to your plugins list in `~/.zshrc`:
