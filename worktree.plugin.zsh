@@ -51,9 +51,9 @@ export function worktree(){
         echo "branch '$BRANCH' exists checking out into '$DIRNAME'"
         echo "→ git worktree add $DIRNAME $BRANCH"
         git worktree add $DIRNAME $BRANCH
-        pushd 
+        pushd > /dev/null
         $=WORKTREE_POST_CREATE
-        popd
+        popd > /dev/null
     elif git worktree list | grep -q "\[${BRANCH}\]"; then
         DIRNAME=$(git worktree list | grep "\[$BRANCH\]" | cut -f1 -d' ')
         echo "$BRANCH already exists in $DIRNAME"
@@ -62,13 +62,13 @@ export function worktree(){
         echo "'$1' is a new branch checking out into '$DIRNAME'"
         echo "→ git worktree add $DIRNAME -b $BRANCH"
         git worktree add $DIRNAME -b $BRANCH
-        pushd 
+        pushd > /dev/null
         $=WORKTREE_POST_CREATE
-        popd
+        popd > /dev/null
     fi
-    pushd $DIRNAME
+    pushd $DIRNAME > /dev/null
     $=WORKTREE_POST_SWITCH
-    popd
+    popd > /dev/null
     if [[ -n $WORKTREE_CODE_EDITOR ]];then
         confirm "Open vs code in $DIRNAME" && \
         $WORKTREE_CODE_EDITOR $DIRNAME
